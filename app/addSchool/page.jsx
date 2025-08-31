@@ -19,7 +19,6 @@ export default function AddSchool() {
             const result = await res.json();
             if (res.ok) {
                 setMessage(result.message || "School added successfully!");
-                // ✅ 1 second baad Home page par redirect
                 setTimeout(() => {
                     router.push("/");
                 }, 1000);
@@ -39,60 +38,106 @@ export default function AddSchool() {
                 </h1>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    {/* School Name */}
                     <div>
                         <input
-                            {...register("name", { required: true })}
+                            {...register("name", { required: "School Name is required", minLength: { value: 3, message: "At least 3 characters" } })}
                             placeholder="School Name"
                             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                         />
                         {errors.name && (
-                            <p className="text-red-500 text-sm mt-1">School Name required</p>
+                            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
                         )}
                     </div>
 
-                    <input
-                        {...register("address", { required: true })}
-                        placeholder="Address"
-                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-                    <input
-                        {...register("city", { required: true })}
-                        placeholder="City"
-                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-                    <input
-                        {...register("state", { required: true })}
-                        placeholder="State"
-                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-
-                    <input
-                        {...register("contact")}
-                        placeholder="Contact Person"
-                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-                    <input
-                        {...register("number")}
-                        placeholder="Phone Number"
-                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-                    <input
-                        {...register("image")}
-                        placeholder="Image URL"
-                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-
+                    {/* Address */}
                     <div>
                         <input
-                            {...register("email_id", { pattern: /^\S+@\S+$/i })}
+                            {...register("address", { required: "Address is required", minLength: { value: 5, message: "At least 5 characters" } })}
+                            placeholder="Address"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        />
+                        {errors.address && (
+                            <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>
+                        )}
+                    </div>
+
+                    {/* City */}
+                    <div>
+                        <input
+                            {...register("city", { required: "City is required" })}
+                            placeholder="City"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        />
+                        {errors.city && (
+                            <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>
+                        )}
+                    </div>
+
+                    {/* State */}
+                    <div>
+                        <input
+                            {...register("state", { required: "State is required" })}
+                            placeholder="State"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        />
+                        {errors.state && (
+                            <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>
+                        )}
+                    </div>
+
+                    {/* Contact Person */}
+                    <div>
+                        <input
+                            {...register("contact", { required: "Contact person is required" })}
+                            placeholder="Contact Person"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        />
+                        {errors.contact && (
+                            <p className="text-red-500 text-sm mt-1">{errors.contact.message}</p>
+                        )}
+                    </div>
+
+                    {/* Phone Number */}
+                    <div>
+                        <input
+                            {...register("number", {
+                                required: "Phone number is required",
+                                pattern: { value: /^[0-9]{10}$/, message: "Enter valid 10-digit number" }
+                            })}
+                            placeholder="Phone Number"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        />
+                        {errors.number && (
+                            <p className="text-red-500 text-sm mt-1">{errors.number.message}</p>
+                        )}
+                    </div>
+
+                    {/* Image URL (optional, no validation) */}
+                    <div>
+                        <input
+                            {...register("image")}
+                            placeholder="Image URL (optional)"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                        <input
+                            {...register("email_id", {
+                                required: "Email is required",
+                                pattern: { value: /^\S+@\S+$/i, message: "Enter valid email" }
+                            })}
                             placeholder="Email"
                             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                         />
                         {errors.email_id && (
-                            <p className="text-red-500 text-sm mt-1">Enter valid email</p>
+                            <p className="text-red-500 text-sm mt-1">{errors.email_id.message}</p>
                         )}
                     </div>
 
+                    {/* Submit Button */}
                     <button
                         type="submit"
                         className="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"

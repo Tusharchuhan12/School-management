@@ -6,9 +6,13 @@ export default function ShowSchools() {
 
     // Fetch all schools
     const fetchSchools = async () => {
-        const res = await fetch("/api/schools");
-        const data = await res.json();
-        setSchools(data);
+        try {
+            const res = await fetch("/api/schools");
+            const data = await res.json();
+            setSchools(data);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     useEffect(() => {
@@ -28,7 +32,6 @@ export default function ShowSchools() {
 
             if (res.ok) {
                 alert(result.message || "School deleted successfully!");
-                // Remove from UI
                 setSchools(schools.filter((s) => s._id !== id));
             } else {
                 alert(result.error || "Failed to delete school");
@@ -47,23 +50,45 @@ export default function ShowSchools() {
 
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {schools.length > 0 ? (
-                    schools.map((school, idx) => (
+                    schools.map((school) => (
                         <div
-                            key={school._id || school.id || idx}
-                            className="bg-white rounded-xl shadow-md hover:shadow-xl transition p-4 flex flex-col items-center"
+                            key={school._id}
+                            className="bg-white rounded-xl shadow-md hover:shadow-xl transition p-4 flex flex-col"
                         >
+                            {/* School Image */}
                             <img
                                 src={school.image || "https://via.placeholder.com/250x150"}
                                 alt={school.name}
                                 className="w-full h-40 object-cover rounded-lg mb-4"
                             />
-                            <h2 className="text-lg font-semibold text-gray-800">{school.name}</h2>
+
+                            {/* School Details */}
+                            <h2 className="text-lg font-semibold text-gray-800">
+                                {school.name}
+                            </h2>
                             <p className="text-gray-600 text-sm mt-1">
                                 {school.address}, {school.city}
                             </p>
                             <p className="text-gray-500 text-sm">{school.state}</p>
 
-                            {/* ✅ Delete Button */}
+                            {/* Contact Info */}
+                            {school.contact && (
+                                <p className="text-gray-700 text-sm mt-1">
+                                    👤 Contact: {school.contact}
+                                </p>
+                            )}
+                            {school.number && (
+                                <p className="text-gray-700 text-sm">
+                                    📞 {school.number}
+                                </p>
+                            )}
+                            {school.email_id && (
+                                <p className="text-gray-700 text-sm break-words">
+                                    📧 {school.email_id}
+                                </p>
+                            )}
+
+                            {/* Delete Button */}
                             <button
                                 onClick={() => handleDelete(school._id)}
                                 className="mt-3 px-4 py-2 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600 transition"
